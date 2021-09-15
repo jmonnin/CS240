@@ -34,9 +34,9 @@ typedef struct g_parsed_line
   int month;
   int day;
   int year;
-  int hour;
-  int min;
-  int seconds;
+  double hour;
+  double min;
+  double seconds;
   char app_name[10];
 } g_parsed_line;
 
@@ -58,6 +58,8 @@ g_parsed_line parse_line(FILE *in_file)
   fscanf(in_file, "/");
   fscanf(in_file, "%d", &result.year);
   fscanf(in_file, "|");
+
+  //fscanf(in_file, "%d/%d/%d|%s|%d:%d:%d\n", )
 
   memset(result.app_name, 0, sizeof result.app_name);
   char ch = '0';
@@ -147,6 +149,7 @@ float app_time_percentage(char *file_name, char *given_app_name) {
   }
 
   fclose(in_file);
+  in_file = NULL;
 
   return (app_time_spent / time_spent) * 100;
 } /* app_time_percentage() */
