@@ -21,6 +21,7 @@
  *  This function converts hours to min
  *  and seconds to min
  */
+
 float hms_to_hours(int hour, int min, int seconds)
 {
   float converted_min = min / 60.0f;
@@ -46,6 +47,7 @@ typedef struct
  *  in the file and parses
  *  the line
  */
+
 parsed_line parse_line(FILE *in_file)
 {
   parsed_line result = {0};
@@ -76,7 +78,7 @@ parsed_line parse_line(FILE *in_file)
   return result;
 } /* parse_line() */
 
-/* 
+/*
  *  Define avg_time_spent here
  *  This function compares
  *  the average time spent
@@ -116,12 +118,13 @@ float avg_time_spent(char *file_name, int given_month, int given_year)
   return time_spent / matching_days;
 } /* avg_time_spent() */
 
-/* 
+/*
  *  Define app_time_percentage here
  *  This function compares
  *  the phone usage between different
  *  months in a year
  */
+
 float app_time_percentage(char *file_name, char *given_app_name) {
   FILE *in_file = fopen(file_name, "r");
   if (in_file == NULL) {
@@ -148,12 +151,13 @@ float app_time_percentage(char *file_name, char *given_app_name) {
   return (app_time_spent / time_spent) * 100;
 } /* app_time_percentage() */
 
-/* 
+/*
  *  Define daily_phone_usage here
  *  This function compares
  *  the phone usage between different
  *  months in a year
  */
+
 int daily_phone_usage(char *in_file_name, int given_year, int given_month,
  char *out_file_name) {
   FILE *in_file = fopen(in_file_name, "r");
@@ -200,12 +204,13 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month,
   return OK;
 } /* daily_phone_usage() */
 
-/* 
+/*
  *  Define min_max_usage here
  *  This function compares
  *  the phone usage between different
  *  months in a year
  */
+
 int min_max_usage(char *in_file_name, int given_month, int given_year,
  char *out_file_name)
 {
@@ -277,6 +282,7 @@ int min_max_usage(char *in_file_name, int given_month, int given_year,
  *  the phone usage between different
  *  months in a year
  */
+
 int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
  int year2, char *out_file_name)
 {
