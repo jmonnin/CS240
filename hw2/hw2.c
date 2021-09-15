@@ -16,12 +16,11 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-/* 
+/*
  *  Define hms_to_hours here
  *  This function converts hours to min
  *  and seconds to min
  */
-
 float hms_to_hours(int hour, int min, int seconds)
 {
   float converted_min = min / 60.0f;
@@ -40,14 +39,13 @@ typedef struct
   char app_name[10];
 } parsed_line;
 
-/* 
+/*
  *  Define parse_line here
  *  This function compares
  *  the segments of the string
  *  in the file and parses
  *  the line
  */
-
 parsed_line parse_line(FILE *in_file)
 {
   parsed_line result = {0};
@@ -124,7 +122,6 @@ float avg_time_spent(char *file_name, int given_month, int given_year)
  *  the phone usage between different
  *  months in a year
  */
-
 float app_time_percentage(char *file_name, char *given_app_name) {
   FILE *in_file = fopen(file_name, "r");
   if (in_file == NULL) {
@@ -157,7 +154,6 @@ float app_time_percentage(char *file_name, char *given_app_name) {
  *  the phone usage between different
  *  months in a year
  */
-
 int daily_phone_usage(char *in_file_name, int given_year, int given_month,
  char *out_file_name) {
   FILE *in_file = fopen(in_file_name, "r");
@@ -210,7 +206,6 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month,
  *  the phone usage between different
  *  months in a year
  */
-
 int min_max_usage(char *in_file_name, int given_month, int given_year,
  char *out_file_name)
 {
@@ -276,13 +271,12 @@ int min_max_usage(char *in_file_name, int given_month, int given_year,
   return OK;
 } /* min_max_usage() */
 
-/* 
- *  Define compare_phone_usage here 
+/*
+ *  Define compare_phone_usage here
  *  This function compares
  *  the phone usage between different
  *  months in a year
  */
-
 int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
  int year2, char *out_file_name)
 {
@@ -336,7 +330,8 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
       }
       else
       {
-        fprintf(out_file, "Day %d: Used phone for %.2f hrs more in %d/%d than %d/%d\n",
+        fprintf(out_file,
+        "Day %d: Used phone for %.2f hrs more in %d/%d than %d/%d\n",
          i, diff, month1, year1, month2, year2);
       }
     }
@@ -346,4 +341,4 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
   fclose(out_file);
 
   return OK;
-} /* compare_phone_usage */
+} /* compare_phone_usage() */
