@@ -16,7 +16,8 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-/* Define hms_to_hours */
+/* Define hms_to_hours here */
+
 float hms_to_hours(int hour, int min, int seconds)
 {
   float converted_min = min / 60.0f;
@@ -24,7 +25,7 @@ float hms_to_hours(int hour, int min, int seconds)
   return converted_min + converted_sec + hour;
 } /* hms_to_hours() */
 
-typedef struct parsed_line
+typedef struct
 {
   int month;
   int day;
@@ -35,38 +36,40 @@ typedef struct parsed_line
   char app_name[10];
 } parsed_line;
 
-/* Define parse_line */
+/* Define parse_line here */
+
 parsed_line parse_line(FILE *in_file)
 {
-  parsed_line g_result = {0};
+  parsed_line result = {0};
 
-  fscanf(in_file, "%d", &g_result.month);
+  fscanf(in_file, "%d", &result.month);
   fscanf(in_file, "/");
-  fscanf(in_file, "%d", &g_result.day);
+  fscanf(in_file, "%d", &result.day);
   fscanf(in_file, "/");
-  fscanf(in_file, "%d", &g_result.year);
+  fscanf(in_file, "%d", &result.year);
   fscanf(in_file, "|");
 
-  memset(g_result.app_name, 0, sizeof g_result.app_name);
+  memset(result.app_name, 0, sizeof result.app_name);
   char ch = '0';
   do {
     ch = fgetc(in_file);
     if (ch == '|') {
       continue;
     }
-    strncat(g_result.app_name, &ch, 1);
+    strncat(result.app_name, &ch, 1);
   } while (ch != '|');
 
-  fscanf(in_file, "%d", &g_result.hour);
+  fscanf(in_file, "%d", &result.hour);
   fscanf(in_file, ":");
-  fscanf(in_file, "%d", &g_result.min);
+  fscanf(in_file, "%d", &result.min);
   fscanf(in_file, ":");
-  fscanf(in_file, "%d", &g_result.seconds);
+  fscanf(in_file, "%d", &result.seconds);
 
-  return g_result;
+  return result;
 } /* parse_line() */
 
 /* Define avg_time_spent here */
+
 float avg_time_spent(char *file_name, int given_month, int given_year)
 {
   FILE *in_file = fopen(file_name, "r");
@@ -81,10 +84,10 @@ float avg_time_spent(char *file_name, int given_month, int given_year)
   while (fgets(line, LINE_LENGTH, in_file) != NULL) {
     parsed_line result = parse_line(in_file);
 
-    if (result.month != given_month || result.year != given_year) {
+    if ((result.month != given_month) || (result.year != given_year)) {
       continue;
     }
-    
+
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
     time_spent += time;
@@ -101,8 +104,8 @@ float avg_time_spent(char *file_name, int given_month, int given_year)
 } /* avg_time_spent() */
 
 /* Define app_time_percentage here */
-float app_time_percentage(char *file_name, char *given_app_name)
-{
+
+float app_time_percentage(char *file_name, char *given_app_name) {
   FILE *in_file = fopen(file_name, "r");
   if (in_file == NULL) {
     return FILE_READ_ERR;
@@ -129,8 +132,9 @@ float app_time_percentage(char *file_name, char *given_app_name)
 } /* app_time_percentage() */
 
 /* Define daily_phone_usage here */
-int daily_phone_usage(char *in_file_name, int given_year, int given_month, char *out_file_name)
-{
+
+int daily_phone_usage(char *in_file_name, int given_year, int given_month,
+ char *out_file_name) {
   FILE *in_file = fopen(in_file_name, "r");
   if (in_file == NULL) {
     return FILE_READ_ERR;
@@ -176,7 +180,9 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month, char 
 } /* daily_phone_usage() */
 
 /* Define min_max_usage here */
-int min_max_usage(char *in_file_name, int given_month, int given_year, char *out_file_name)
+
+int min_max_usage(char *in_file_name, int given_month, int given_year,
+ char *out_file_name)
 {
   FILE *in_file = fopen(in_file_name, "r");
   if (in_file == NULL) {
@@ -228,8 +234,10 @@ int min_max_usage(char *in_file_name, int given_month, int given_year, char *out
     }
   }
 
-  fprintf(out_file, "Minimum usage happened on Day %d for %.2f hrs\n", min_day, min);
-  fprintf(out_file, "Maximum usage happened on Day %d for %.2f hrs\n", max_day, max);
+  fprintf(out_file, "Minimum usage happened on Day %d for %.2f hrs\n",
+   min_day, min);
+  fprintf(out_file, "Maximum usage happened on Day %d for %.2f hrs\n",
+   max_day, max);
 
   fclose(in_file);
   fclose(out_file);
@@ -238,7 +246,9 @@ int min_max_usage(char *in_file_name, int given_month, int given_year, char *out
 } /* min_max_usage() */
 
 /* Define compare_phone_usage here */
-int compare_phone_usage(char *in_file_name, int month1, int year1, int month2, int year2, char *out_file_name)
+
+int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
+ int year2, char *out_file_name)
 {
   FILE *in_file = fopen(in_file_name, "r");
   if (in_file == NULL) {
