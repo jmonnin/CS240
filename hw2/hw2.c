@@ -29,7 +29,7 @@ float hms_to_hours(int hour, int min, int seconds)
   return converted_min + converted_sec + hour;
 } /* hms_to_hours() */
 
-typedef struct
+typedef struct g_parsed_line
 {
   int month;
   int day;
@@ -38,7 +38,7 @@ typedef struct
   int min;
   int seconds;
   char app_name[10];
-} parsed_line;
+} g_parsed_line;
 
 /*
  *  Define parse_line here
@@ -48,9 +48,9 @@ typedef struct
  *  the line
  */
 
-parsed_line parse_line(FILE *in_file)
+g_parsed_line parse_line(FILE *in_file)
 {
-  parsed_line result = {0};
+  g_parsed_line result = {0};
 
   fscanf(in_file, "%d", &result.month);
   fscanf(in_file, "/");
@@ -97,7 +97,7 @@ float avg_time_spent(char *file_name, int given_month, int given_year)
   float time_spent = 0;
   int matching_days = 0;
   while (fgets(line, LINE_LENGTH, in_file) != NULL) {
-    parsed_line result = parse_line(in_file);
+    g_parsed_line result = parse_line(in_file);
 
     if ((result.month != given_month) || (result.year != given_year)) {
       continue;
@@ -135,7 +135,7 @@ float app_time_percentage(char *file_name, char *given_app_name) {
   float time_spent = 0;
   float app_time_spent = 0;
   while (fgets(line, LINE_LENGTH, in_file) != NULL) {
-    parsed_line result = parse_line(in_file);
+    g_parsed_line result = parse_line(in_file);
 
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
@@ -177,7 +177,7 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month,
   name[strcspn(name, "\n")] = 0; // remove trailing '\n'
 
   do {
-    parsed_line result = parse_line(in_file);
+    g_parsed_line result = parse_line(in_file);
 
     if ((result.month != given_month) || (result.year != given_year)) {
       continue;
@@ -231,7 +231,7 @@ int min_max_usage(char *in_file_name, int given_month, int given_year,
   name[strcspn(name, "\n")] = 0; // remove trailing '\n'
 
   do {
-    parsed_line result = parse_line(in_file);
+    g_parsed_line result = parse_line(in_file);
 
     if ((result.month != given_month) || (result.year != given_year)) {
       continue;
@@ -304,7 +304,7 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
   name[strcspn(name, "\n")] = 0; // remove trailing '\n'
 
   do {
-    parsed_line result = parse_line(in_file);
+    g_parsed_line result = parse_line(in_file);
 
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
