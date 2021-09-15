@@ -1,8 +1,8 @@
-/* Name, hw2.c, CS 240, Fall 2021
- * Last updated Sep 01, 2021
+/* John Monnin, hw2.c, CS 240, Fall 2021
+ * Last updated Sep 15, 2021
  */
 
-/* Add any includes here */
+/* Includes here */
 
 #include "hw2.h"
 #include <stdio.h>
@@ -16,7 +16,11 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-/* Define hms_to_hours here */
+/* 
+ *  Define hms_to_hours here
+ *  This function converts hours to min
+ *  and seconds to min
+ */
 
 float hms_to_hours(int hour, int min, int seconds)
 {
@@ -36,7 +40,13 @@ typedef struct
   char app_name[10];
 } parsed_line;
 
-/* Define parse_line here */
+/* 
+ *  Define parse_line here
+ *  This function compares
+ *  the segments of the string
+ *  in the file and parses
+ *  the line
+ */
 
 parsed_line parse_line(FILE *in_file)
 {
@@ -68,7 +78,12 @@ parsed_line parse_line(FILE *in_file)
   return result;
 } /* parse_line() */
 
-/* Define avg_time_spent here */
+/* 
+ *  Define avg_time_spent here
+ *  This function compares
+ *  the average time spent
+ *  in a month
+ */
 
 float avg_time_spent(char *file_name, int given_month, int given_year)
 {
@@ -103,7 +118,12 @@ float avg_time_spent(char *file_name, int given_month, int given_year)
   return time_spent / matching_days;
 } /* avg_time_spent() */
 
-/* Define app_time_percentage here */
+/* 
+ *  Define app_time_percentage here
+ *  This function compares
+ *  the phone usage between different
+ *  months in a year
+ */
 
 float app_time_percentage(char *file_name, char *given_app_name) {
   FILE *in_file = fopen(file_name, "r");
@@ -131,7 +151,12 @@ float app_time_percentage(char *file_name, char *given_app_name) {
   return (app_time_spent / time_spent) * 100;
 } /* app_time_percentage() */
 
-/* Define daily_phone_usage here */
+/* 
+ *  Define daily_phone_usage here
+ *  This function compares
+ *  the phone usage between different
+ *  months in a year
+ */
 
 int daily_phone_usage(char *in_file_name, int given_year, int given_month,
  char *out_file_name) {
@@ -179,7 +204,12 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month,
   return OK;
 } /* daily_phone_usage() */
 
-/* Define min_max_usage here */
+/* 
+ *  Define min_max_usage here
+ *  This function compares
+ *  the phone usage between different
+ *  months in a year
+ */
 
 int min_max_usage(char *in_file_name, int given_month, int given_year,
  char *out_file_name)
@@ -212,7 +242,8 @@ int min_max_usage(char *in_file_name, int given_month, int given_year,
     time_by_days[result.day] += time;
   } while (fgets(line, LINE_LENGTH, in_file) != NULL);
 
-  fprintf(out_file, "Name: %s, Month: %d, Year: %d\n", name, given_month, given_year);
+  fprintf(out_file, "Name: %s, Month: %d, Year: %d\n",
+   name, given_month, given_year);
   float epsilon = 1.084202e-19;
 
   int min_day = 0;
@@ -245,7 +276,12 @@ int min_max_usage(char *in_file_name, int given_month, int given_year,
   return OK;
 } /* min_max_usage() */
 
-/* Define compare_phone_usage here */
+/* 
+ *  Define compare_phone_usage here 
+ *  This function compares
+ *  the phone usage between different
+ *  months in a year
+ */
 
 int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
  int year2, char *out_file_name)
@@ -295,11 +331,13 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
 
     if ((time1 > epsilon) || (time2 > epsilon)) {
       if (diff <= epsilon) {
-        fprintf(out_file, "Day %d: Used phone is equal in %d/%d and %d/%d\n", i, month1, year1, month2, year2);
+        fprintf(out_file, "Day %d: Used phone is equal in %d/%d and %d/%d\n",
+         i, month1, year1, month2, year2);
       }
       else
       {
-        fprintf(out_file, "Day %d: Used phone for %.2f hrs more in %d/%d than %d/%d\n", i, diff, month1, year1, month2, year2);
+        fprintf(out_file, "Day %d: Used phone for %.2f hrs more in %d/%d than %d/%d\n",
+         i, diff, month1, year1, month2, year2);
       }
     }
   }
@@ -309,7 +347,3 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2,
 
   return OK;
 } /* compare_phone_usage */
-
-/* Remember, you don't need a main function!
- * It is provided by hw2_main.c or  hw2_test.o
- */
