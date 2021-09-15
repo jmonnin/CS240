@@ -17,6 +17,7 @@
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 /* Define hms_to_hours */
+
 float hms_to_hours(int hour, int min, int seconds)
 {
   float converted_min = min / 60.0f;
@@ -36,6 +37,7 @@ typedef struct parsed_line
 } parsed_line;
 
 /* Define parse_line */
+
 parsed_line parse_line(FILE *in_file)
 {
   parsed_line result = {0};
@@ -51,8 +53,7 @@ parsed_line parse_line(FILE *in_file)
   char ch = '0';
   do {
     ch = fgetc(in_file);
-    if (ch == '|')
-    {
+    if (ch == '|') {
       continue;
     }
     strncat(result.app_name, &ch, 1);
@@ -68,7 +69,8 @@ parsed_line parse_line(FILE *in_file)
 } /* parse_line() */
 
 /* Define avg_time_spent here */
-float avg_time_spent (char *file_name, int given_month, int given_year)
+
+float avg_time_spent(char *file_name, int given_month, int given_year)
 {
   FILE *in_file = fopen(file_name, "r");
   if (in_file == NULL) {
@@ -79,19 +81,18 @@ float avg_time_spent (char *file_name, int given_month, int given_year)
   bool counted_days[31];
   float time_spent = 0;
   int matching_days = 0;
-  while (fgets(line, LINE_LENGTH, in_file) != NULL)
-  {
+  while (fgets(line, LINE_LENGTH, in_file) != NULL) {
     parsed_line result = parse_line(in_file);
 
-    if (result.month != given_month || result.year != given_year)
+    if (result.month != given_month || result.year != given_year) {
       continue;
-
+    }
+    
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
     time_spent += time;
 
-    if (counted_days[result.day] != true)
-    {
+    if (counted_days[result.day] != true) {
       matching_days++;
       counted_days[result.day] = true;
     }
@@ -103,27 +104,25 @@ float avg_time_spent (char *file_name, int given_month, int given_year)
 } /* avg_time_spent() */
 
 /* Define app_time_percentage here */
+
 float app_time_percentage(char *file_name, char *given_app_name)
 {
   FILE *in_file = fopen(file_name, "r");
-  if (in_file == NULL)
-  {
+  if (in_file == NULL) {
     return FILE_READ_ERR;
   }
 
   char line[LINE_LENGTH];
   float time_spent = 0;
   float app_time_spent = 0;
-  while (fgets(line, LINE_LENGTH, in_file) != NULL)
-  {
+  while (fgets(line, LINE_LENGTH, in_file) != NULL) {
     parsed_line result = parse_line(in_file);
 
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
     time_spent += time;
 
-    if (strcmp(result.app_name, given_app_name) == 0)
-    {
+    if (strcmp(result.app_name, given_app_name) == 0) {
       app_time_spent += time;
     }
   }
@@ -134,16 +133,15 @@ float app_time_percentage(char *file_name, char *given_app_name)
 } /* app_time_percentage() */
 
 /* Define daily_phone_usage here */
+
 int daily_phone_usage(char *in_file_name, int given_year, int given_month, char *out_file_name)
 {
   FILE *in_file = fopen(in_file_name, "r");
-  if (in_file == NULL)
-  {
+  if (in_file == NULL) {
     return FILE_READ_ERR;
   }
   FILE *out_file = fopen(out_file_name, "w");
-  if (out_file == NULL)
-  {
+  if (out_file == NULL) {
     return FILE_WRITE_ERR;
   }
 
@@ -157,9 +155,10 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month, char 
   do {
     parsed_line result = parse_line(in_file);
 
-    if (result.month != given_month || result.year != given_year)
+    if (result.month != given_month || result.year != given_year) {
       continue;
-
+    }
+    
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
     time_by_days[result.day] += time;
@@ -170,8 +169,7 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month, char 
   for (int i = 0; i < 31; i++)
   {
     float time = time_by_days[i];
-    if (time > epsilon)
-    {
+    if (time > epsilon) {
       fprintf(out_file, "Day %d: %.2f hrs\n", i, time);
     }
   }
@@ -183,16 +181,15 @@ int daily_phone_usage(char *in_file_name, int given_year, int given_month, char 
 } /* daily_phone_usage() */
 
 /* Define min_max_usage here */
+
 int min_max_usage(char *in_file_name, int given_month, int given_year, char *out_file_name)
 {
   FILE *in_file = fopen(in_file_name, "r");
-  if (in_file == NULL)
-  {
+  if (in_file == NULL) {
     return FILE_READ_ERR;
   }
   FILE *out_file = fopen(out_file_name, "w");
-  if (out_file == NULL)
-  {
+  if (out_file == NULL) {
     return FILE_WRITE_ERR;
   }
 
@@ -206,8 +203,9 @@ int min_max_usage(char *in_file_name, int given_month, int given_year, char *out
   do {
     parsed_line result = parse_line(in_file);
 
-    if (result.month != given_month || result.year != given_year)
+    if (result.month != given_month || result.year != given_year) {
       continue;
+    }
 
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
@@ -225,15 +223,12 @@ int min_max_usage(char *in_file_name, int given_month, int given_year, char *out
   for (int i = 0; i < 31; i++)
   {
     float time = time_by_days[i];
-    if (time > epsilon)
-    {
-      if (time < min)
-      {
+    if (time > epsilon) {
+      if (time < min) {
         min_day = i;
         min = time;
       }
-      if (time > max)
-      {
+      if (time > max) {
         max_day = i;
         max = time;
       }
@@ -250,16 +245,15 @@ int min_max_usage(char *in_file_name, int given_month, int given_year, char *out
 } /* min_max_usage() */
 
 /* Define compare_phone_usage here */
+
 int compare_phone_usage(char *in_file_name, int month1, int year1, int month2, int year2, char *out_file_name)
 {
   FILE *in_file = fopen(in_file_name, "r");
-  if (in_file == NULL)
-  {
+  if (in_file == NULL) {
     return FILE_READ_ERR;
   }
   FILE *out_file = fopen(out_file_name, "w");
-  if (out_file == NULL)
-  {
+  if (out_file == NULL) {
     return FILE_WRITE_ERR;
   }
 
@@ -276,12 +270,10 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2, i
 
     float time = hms_to_hours(result.hour, result.min, result.seconds);
 
-    if (result.month == month1 && result.year == year1)
-    {
+    if (result.month == month1 && result.year == year1) {
       time_by_days1[result.day] += time;
     }
-    else if (result.month == month2 && result.year == year2)
-    {
+    else if (result.month == month2 && result.year == year2) {
       time_by_days2[result.day] += time;
     }
   } while (fgets(line, LINE_LENGTH, in_file) != NULL);
@@ -291,8 +283,7 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2, i
   fprintf(out_file, "Month 2: %d, Year 2: %d\n", month2, year2);
   float epsilon = 1.084202e-19;
 
-  for (int i = 0; i < 31; i++)
-  {
+  for (int i = 0; i < 31; i++) {
     float time1 = time_by_days1[i];
     float time2 = time_by_days2[i];
 
@@ -300,10 +291,8 @@ int compare_phone_usage(char *in_file_name, int month1, int year1, int month2, i
     float higher_time = MAX(time1, time2);
     float diff = higher_time - lower_time;
 
-    if (time1 > epsilon || time2 > epsilon)
-    {
-      if (diff <= epsilon)
-      {
+    if (time1 > epsilon || time2 > epsilon) {
+      if (diff <= epsilon) {
         fprintf(out_file, "Day %d: Used phone is equal in %d/%d and %d/%d\n", i, month1, year1, month2, year2);
       }
       else
